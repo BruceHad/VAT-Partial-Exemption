@@ -1,0 +1,32 @@
+{
+  "name": "tr-quickstart-basic",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./dist/index.html",
+  "repository": "https://github.com/BruceHad/tr-quickstart-basic",
+  "scripts": {
+    "dev": "gulp",
+    "start": "cd dist && http-server",
+    "deploy": "node scripts/deploy.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-preset-env": "1.6.0",
+    "bootstrap-sass": "^3.3.7",
+    "del": "^3.0.0",
+    "fs": "0.0.1-security",
+    "ftp-deploy": "^1.2.2",
+    "gulp": "^3.9.1",
+    "gulp-babel": "6.1.2",
+    "gulp-compile-handlebars": "^0.6.1",
+    "gulp-data": "^1.2.1",
+    "gulp-html-beautify": "^1.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0",
+    "http-server": "0.10.0",
+    "path": "^0.12.7",
+    "run-sequence": "^2.0.0",
+    "webpack-stream": "^4.0.0"
+  }
+}

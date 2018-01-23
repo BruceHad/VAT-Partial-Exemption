@@ -14,25 +14,18 @@ The De Minimis criteria:
 1. Exempt inputs are < £625 per month (on average for the quarter/year so £7,500 per year on average)
 2. Exempt inputs are < 50% of total inputs
 
-A business that meets both criteria is consider _De Minimis_ and can reclaim all VAT.
-
-So in order to calculate De Minimis we need to calculate the exempt inputs.
+A business that meets both criteria is considered _De Minimis_ and can reclaim all VAT.
 
 The De Minimis is generally calculated four times a year:
 
-* The first three are on quarterly basis (i.e. the previous three months). 
-* The final calculation is based on the full year (previous 12 months). 
+* The first three are on quarterly basis (i.e. the previous three months)
+* The final calculation is based on the full year (previous 12 months)
 
 Adjustments can be applied at the _year end_ if any of the previous calculation differ from the final i.e. the year end is the one that counts and the previous calculations were basically estimates.
 
-_Exempt Inputs_ for a business are calculated as the:
+In order to calculate De Minimis we need to calculate the _Exempt Inputs_, which are calculated as the VAT wholly attributable to _Exempt Supplies__ plus the _Exempt Residual VAT_.
 
-* VAT wholly attributable to _exempt_ supplies +
-* The exempt fraction of the residual VAT.
-
-_Residual_ VAT is the VAT paid on general business expenses that cannot be easily attributed to exempt or taxable supplies.
-
-The fraction is calculated as the percent of _Total Supply_ (i.e the net sales): exempt sales/total sales.
+The _Residual_ VAT is the VAT paid on general business expenses that cannot be attributed to either Exempt or Taxable supplies. It is therefore split into Exempt and Taxable based on the ratio of Exempt and Taxable _Total Supply_ (i.e the net sales).
 
 _Total Input_ is all the VAT paid on all types of expenditure: Wholly Attributable + Attributable to Exempt + Residual.
 
@@ -49,11 +42,13 @@ Quarterly Calculation
 
 (For quarters 1, 2 and 3)
 
-Using the quarterly outputs we can calculate the percentage exempt to be applied to the residual calculation.
+Using the quarterly outputs/supply we can calculate the percentage exempt to be applied to the residual calculation.
+
+* Exempt Residual VAT = Exempt Supply/Total Supply * Total Residual VAT
 
 Then we calculate (for the quarter) the Exempt Input:
 
-* Attributable to Exempt +
+* VAT Attributable to Exempt Input +
 * Exempt fraction of the Residual
 
 Then we calculate (for the quarter) the Total Input:
@@ -78,7 +73,7 @@ Using the quarterly outputs we can calculate the yearly total and therefore the 
 
 Then we calculate (for the year) the Exempt Input:
 
-* Attributable to Exempt +
+* VAT Attributable to Exempt Input +
 * Exempt fraction of the Residual
 
 Then we calculate (for the year) the Total Input:

@@ -35,7 +35,7 @@ User Inputs
 In order to calcualate all this we need the user to input:
 
 1. The quarterly outputs (net sales) broken down by Exempt/Taxable (Standard + Zero Rated) 
-2. Input VAT broken down by Wholly, Exempt and Residual
+2. Input VAT broken down by Taxable, Exempt and Residual
 
 Quarterly Calculation
 ---------------------
@@ -49,7 +49,7 @@ Using the quarterly outputs/supply we can calculate the percentage exempt to be 
 Then we calculate (for the quarter) the Exempt Input:
 
 * VAT Attributable to Exempt Input +
-* Exempt fraction of the Residual
+* Exempt Residual VAT
 
 Then we calculate (for the quarter) the Total Input:
 

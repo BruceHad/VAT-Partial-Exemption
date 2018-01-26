@@ -14,15 +14,143 @@
 <body>
 
     {{> header}}
-    
-    <div class='container'>
-        <p>If this page looks okay then html templating and CSS should be working.</p>
-        <p id='js-test'>And let's check if babel is working<span>.</span></p>
+
+    <div class="container-fluid" id="app">
+        <div class="row">
+            <div class="col col-md-4">
+                <section class="introduction text">
+                    <blockquote cite="https://www.gov.uk/government/publications/vat-notice-706-partial-exemption/vat-notice-706-partial-exemption">
+                        <p>A business is partly exempt if it makes, or intends to make, both taxable and exempt supplies and incurs tax on costs which relate to both.</p>
+                        <p>If your business is partly exempt, you may not be able to recover all your input tax. You will have to use a partial exemption method to work out how much input tax you can recover.</p>
+                        <footer><a href="https://www.gov.uk/government/publications/vat-notice-706-partial-exemption/vat-notice-706-partial-exemption">VAT Notice 706: partial exemption</a></footer>
+                    </blockquote>
+                </section>
+            </div>
+            <div class="col col-md-8">
+                <section class="user-inputs data">
+                    <p>Please enter the quarterly outputs (net sales):</p>
+                    <table id="table-outputs" class="table table-striped table-bordered table-condensed table-inputs">
+                        <tr>
+                            <th class="first-column">&nbsp</th>
+                            <th v-for="(value, key) in state.outputs.exempt">${key}</th>
+                        </tr>
+
+                        <tr>
+                            <td class="first-column">Taxable Outputs:<br />
+                                <small>(standard and zero rated)</small></td>
+                            <td v-for="(value, key) in state.outputs.taxable">
+                                <input type="number" class="form-control" v-model.number="state.outputs.taxable[key]" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="first-column">Exempt Outputs:</td>
+                            <td v-for="(value, key) in state.outputs.exempt">
+                                <input type="number" class="form-control" v-model.number="state.outputs.exempt[key]" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="first-column">Percent Exempt:</td>
+                            <td v-for="(value, key) in percentsExempt">
+                                <span v-if="percentsExempt[key]">${percentsExempt[key]}%</span>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <p>Please enter the VAT on purchases:</p>
+                    <table id="table-outputs" class="table table-striped table-bordered table-condensed table-inputs">
+                        <tr>
+                            <th class="first-column">&nbsp</th>
+                            <th v-for="(value, key) in state.inputVAT.exempt">${key}</th>
+                        </tr>
+
+                        <tr>
+                            <td class="first-column">VAT on Taxable Inputs:</td>
+                            <td v-for="(value, key) in state.inputVAT.taxable">
+                                <input type="number" class="form-control" v-model.number="state.inputVAT.taxable[key]" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="first-column">VAT on Exempt Input:</td>
+                            <td v-for="(value, key) in state.inputVAT.exempt">
+                                <input type="number" class="form-control" v-model.number="state.inputVAT.exempt[key]" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="first-column">VAT on Residual:</td>
+                            <td v-for="(value, key) in state.inputVAT.residual">
+                                <input type="number" class="form-control" v-model.number="state.inputVAT.residual[key]" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="first-column">Total VAT on Inputs:</td>
+                            <td v-for="(value, key) in totalInputs">
+                                <span v-if="totalInputs[key]">${totalInputs[key]}</span>
+                            </td>
+                        </tr>
+
+                    </table>
+                </section>
+
+                <section class="calculation-output data">
+                    <p>De Minimis calculation:</p>
+                    <table id="table-outputs" class="table table-striped table-bordered table-condensed table-inputs">
+                        <tr>
+                            <th class="first-column">&nbsp</th>
+                            <th v-for="(value, key) in state.inputVAT.exempt">${key}</th>
+                        </tr>
+
+                        <tr>
+                            <td class="first-column">Total Inputs:</td>
+                            <td v-for="(value, key) in totalInputs">
+                                <span v-if="totalInputs[key]">${totalInputs[key]}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="first-column">Total Exempt VAT:</td>
+                            <td v-for="(value, key) in totalExemptVAT">
+                                <span v-if="totalExemptVAT[key]">${totalExemptVAT[key]}</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="first-column">Test 1:<br />
+                                <small>Is the Exempt Input less than (£${monthlyAllowance} * 3)?</small></td>
+                            <td v-for="(value, key) in deminimis">
+                                <span>${deminimis[key]['one']}</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="first-column">Test 2:<br />
+                                <small>Is the Exempt Input less 50% of Total Input?</small></td>
+                            <td v-for="(value, key) in deminimis">
+                                <span>${deminimis[key]['two']}</span>
+                            </td>
+                        </tr>
+
+                        <tr class="results">
+                            <td class="first-column">Results:</td>
+                            <td v-for="(value, key) in deminimis">
+                                <div v-if="deminimis[key]['one'] && deminimis[key]['two']" class="pass">You can claim back 100% of VAT!</div>
+                                <div v-else-if="deminimis[key]['one'] == false || deminimis[key]['two'] == false" class="fail">You can't claim back 100% of VAT!</div>
+                            </td>
+                        </tr>
+
+                    </table>
+                </section>
+            </div>
+        </div>
     </div>
-    
+    <!-- end app -->
+
     {{> footer}}
-    
-<script src='scripts/script.js'></script>
+
+    <script src="scripts/script.js"></script>
 </body>
 
 </html>

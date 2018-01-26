@@ -47,23 +47,11 @@ gulp.task('html', function() {
         .pipe(gulp.dest('./dist'));
 });
 
-// gulp.task('js', function() {
-//     // Run js through babel and export to dist
-//     gulp.src('src/js/*.js')
-//         .pipe(babel({
-//             presets: ['env']
-//         }))
-//         .pipe(gulp.dest('./dist/scripts'));
-//     // Copy any static scripts over to dist
-//     gulp.src('./src/js/static/*.js')
-//         .pipe(gulp.dest('./dist/scripts'));
-// });
-
 // if using webpack and modules
 gulp.task('js', function() {
     // Run js through babel and export to dist
     return gulp.src('src/js/script.js')
-        .pipe(webpack())
+        .pipe(webpack(require('./webpack.config.js')))
         .pipe(rename('script.js'))
         .pipe(gulp.dest('./dist/scripts'));
 });

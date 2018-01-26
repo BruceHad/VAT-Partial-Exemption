@@ -28,5 +28,8 @@
     "path": "^0.12.7",
     "run-sequence": "^2.0.0",
     "webpack-stream": "^4.0.0"
+  },
+  "dependencies": {
+    "vue": "^2.5.13"
   }
 }

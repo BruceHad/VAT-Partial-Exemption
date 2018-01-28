@@ -56,7 +56,7 @@
 
                         <tr>
                             <td class="first-column">Percent Exempt:</td>
-                            <td v-for="(value, key) in percentsExempt">
+                            <td v-for="(value, key) in percentsExempt" class="td-number" >
                                 <span v-if="percentsExempt[key]">${percentsExempt[key]}%</span>
                             </td>
                         </tr>
@@ -98,7 +98,7 @@
 
                         <tr>
                             <td class="first-column">Total VAT on Inputs:</td>
-                            <td v-for="(value, key) in totalInputs">
+                            <td v-for="(value, key) in totalInputs"  class="td-number" >
                                 <span v-if="totalInputs[key]">${totalInputs[key]}</span>
                             </td>
                         </tr>
@@ -116,13 +116,13 @@
 
                         <tr>
                             <td class="first-column">Total Inputs:</td>
-                            <td v-for="(value, key) in totalInputs">
+                            <td v-for="(value, key) in totalInputs" class="td-number" >
                                 <span v-if="totalInputs[key]">${totalInputs[key]}</span>
                             </td>
                         </tr>
                         <tr>
                             <td class="first-column">Total Exempt VAT:</td>
-                            <td v-for="(value, key) in totalExemptVAT">
+                            <td v-for="(value, key) in totalExemptVAT" class="td-number" >
                                 <span v-if="totalExemptVAT[key]">${totalExemptVAT[key]}</span>
                             </td>
                         </tr>

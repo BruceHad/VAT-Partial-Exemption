@@ -37,6 +37,14 @@ section {
 /** Tables 
  */
 
+input[type='number'], td.td-number{
+    text-align: right;
+}
+td span {
+    display:block;
+    margin: 1px;
+    padding: 6px 12px;
+}
 .table-inputs {
     table-layout: fixed;
     input {}

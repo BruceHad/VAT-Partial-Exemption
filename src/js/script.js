@@ -1,5 +1,28 @@
 import Vue from 'vue';
 
+/** Supporting functions
+ */
+function getTotal(q) {
+    let total = 0;
+    for (var quarter in q) {
+        if (q[quarter].value) {
+            total += q[quarter].value;
+        }
+        else {
+            return null;
+        }
+    }
+    return total;
+}
+
+Vue.component('c-true', {
+    template: '<span>&#10004; Yes!</span>'
+});
+
+Vue.component('c-false', {
+    template: '<span>&#10008; No!</span>'
+});
+
 new Vue({
     delimiters: ['${', '}'],
     el: '#app',
@@ -12,7 +35,7 @@ new Vue({
             outputs: {
                 taxable: { Q1: { value: 200.50, tabOrder: 1 }, Q2: { value: null, tabOrder: 6 }, Q3: { value: null, tabOrder: 11 }, Q4: { value: null, tabOrder: 16 } },
                 exempt: { Q1: { value: 100, tabOrder: 2 }, Q2: { value: null, tabOrder: 7 }, Q3: { value: null, tabOrder: 12 }, Q4: { value: null, tabOrder: 17 } }
-                
+
             },
             inputVAT: {
                 taxable: { Q1: { value: 250.55, tabOrder: 3 }, Q2: { value: null, tabOrder: 8 }, Q3: { value: null, tabOrder: 13 }, Q4: { value: null, tabOrder: 18 } },
@@ -22,23 +45,29 @@ new Vue({
         }
     },
     computed: {
-        quartersEntered: function() {
-            let outputs = this.state.outputs,
-                inputVAT = this.state.inputVAT,
-                quarter = [];
-
-        },
         percentsExempt: function() {
             let exempt = this.state.outputs.exempt,
                 taxable = this.state.outputs.taxable,
                 percentsExempt = {};
             for (var i in exempt) {
-                if (exempt[i].value > 0 || taxable[i].value > 0) {
-                    percentsExempt[i] = (exempt[i].value / (exempt[i].value + taxable[i].value) * 100).toFixed(2);
-                }
-                else {
+                if (exempt[i].value == null || taxable[i].value == null) {
                     percentsExempt[i] = null;
                 }
+                else if (exempt[i].value + taxable[i].value === 0) {
+                    percentsExempt[i] = Number(0).toFixed(2);
+                }
+                else {
+                    percentsExempt[i] = (exempt[i].value / (exempt[i].value + taxable[i].value) * 100).toFixed(2);
+                }
+            }
+            // now calculate total
+            let totalTaxable = getTotal(this.state.outputs.taxable),
+                totalExempt = getTotal(this.state.outputs.exempt);
+            if (totalTaxable && totalExempt) {
+                percentsExempt['Y'] = (totalExempt / (totalTaxable + totalExempt) * 100).toFixed(2);
+            }
+            else {
+                percentsExempt['Y'] = null;
             }
             return percentsExempt;
         },
@@ -65,6 +94,9 @@ new Vue({
                 exempt = this.state.inputVAT.exempt,
                 totalExempt = {};
             for (var i in percentsExempt) {
+                if (i === 'Y') {
+                    continue;
+                }
                 if (percentsExempt[i] != null && residual[i].value != null) {
                     let erv = (percentsExempt[i] / 100 * residual[i].value);
                     totalExempt[i] = (erv + exempt[i].value).toFixed(2);

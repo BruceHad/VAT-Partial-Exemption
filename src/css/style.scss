@@ -5,16 +5,19 @@ html {
     color: #333;
 }
 
-.div-header, .div-footer {
+.div-header,
+.div-footer {
     background-color: #f1f1f1;
     padding: 30px 15px;
     h1 {
         color: #347DBD;
-        margin: 0; padding: 0;
+        margin: 0;
+        padding: 0;
         font-size: 42px;
     }
     p {
-        margin: 0; padding: 0;
+        margin: 0;
+        padding: 0;
         font-size: 18px;
     }
 }
@@ -37,22 +40,25 @@ section {
 /** Tables 
  */
 
-input[type='number'], td.td-number{
+input[type='number'],
+td.td-number {
     text-align: right;
 }
+
 td span {
-    display:block;
+    display: block;
     margin: 1px;
     padding: 6px 12px;
 }
+
 .table-inputs {
-    table-layout: fixed;
+
     input {}
     td {
         max-width: 72.5% / 3;
     }
     .first-column {
-        width: 27.5%; 
+        width: 27.5%;
         text-align: right;
     }
 }
@@ -64,11 +70,11 @@ tr.results {
         padding: 5px;
     }
     .pass {
-        background-color: green;
+        background-color: #78AB46;
     }
 
     .fail {
-        background-color: yellow;
+        background-color: #FBEC5D;
     }
 
     td {
@@ -79,13 +85,14 @@ tr.results {
 /** Hacks **/
 
 // Hide controls on number <input> fields
-
 input[type='number'] {
-    -moz-appearance:textfield;
+    -moz-appearance: textfield;
 }
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     /* display: none; <- Crashes Chrome on hover */
     -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+    margin: 0;
+    /* <-- Apparently some margin are still there even though it's hidden */
 }

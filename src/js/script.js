@@ -1,5 +1,18 @@
 import Vue from 'vue';
 
+const initialState = {
+    outputs: {
+        taxable: { Q1: { value: null, tabOrder: 1 }, Q2: { value: null, tabOrder: 6 }, Q3: { value: null, tabOrder: 11 }, Q4: { value: null, tabOrder: 16 } },
+        exempt: { Q1: { value: null, tabOrder: 2 }, Q2: { value: null, tabOrder: 7 }, Q3: { value: null, tabOrder: 12 }, Q4: { value: null, tabOrder: 17 } }
+
+    },
+    inputVAT: {
+        taxable: { Q1: { value: null, tabOrder: 3 }, Q2: { value: null, tabOrder: 8 }, Q3: { value: null, tabOrder: 13 }, Q4: { value: null, tabOrder: 18 } },
+        exempt: { Q1: { value: null, tabOrder: 4 }, Q2: { value: null, tabOrder: 9 }, Q3: { value: null, tabOrder: 14 }, Q4: { value: null, tabOrder: 19 } },
+        residual: { Q1: { value: null, tabOrder: 5 }, Q2: { value: null, tabOrder: 10 }, Q3: { value: null, tabOrder: 15 }, Q4: { value: null, tabOrder: 20 } }
+    }
+};
+
 /** Supporting functions
  */
 function getTotal(q) {
@@ -7,6 +20,19 @@ function getTotal(q) {
     for (var quarter in q) {
         if (q[quarter].value) {
             total += q[quarter].value;
+        }
+        else {
+            return null;
+        }
+    }
+    return total;
+}
+
+function getDifferentTotal(q) {
+    let total = 0;
+    for (var quarter in q) {
+        if (q[quarter]) {
+            total += q[quarter];
         }
         else {
             return null;
@@ -30,7 +56,7 @@ new Vue({
         heading: 'App Heading',
         monthlyAllowance: 625,
         quarters: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4'],
-        headings: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Final'],
+        quarters2: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Final'],
         state: {
             outputs: {
                 taxable: { Q1: { value: 200.50, tabOrder: 1 }, Q2: { value: null, tabOrder: 6 }, Q3: { value: null, tabOrder: 11 }, Q4: { value: null, tabOrder: 16 } },
@@ -60,7 +86,7 @@ new Vue({
                     percentsExempt[i] = (exempt[i].value / (exempt[i].value + taxable[i].value) * 100).toFixed(2);
                 }
             }
-            // now calculate total
+            // now calculate yearly total
             let totalTaxable = getTotal(this.state.outputs.taxable),
                 totalExempt = getTotal(this.state.outputs.exempt);
             if (totalTaxable && totalExempt) {
@@ -77,13 +103,30 @@ new Vue({
                 residual = this.state.inputVAT.residual,
                 totalInputs = {};
             for (var i in exempt) {
-                if (exempt[i].value != null && taxable[i].value != null && residual[i].value != null) {
-                    totalInputs[i] = (exempt[i].value + taxable[i].value + residual[i].value).toFixed(2);
+                if (exempt[i].value != null &&
+                    taxable[i].value != null &&
+                    residual[i].value != null) {
+                    totalInputs[i] = (exempt[i].value +
+                            taxable[i].value +
+                            residual[i].value)
+                        .toFixed(2);
                 }
                 else {
                     totalInputs[i] = null;
                 }
             }
+            // Now try to calculate the yearly total
+            let total = 0;
+            for (var j in totalInputs) {
+                if (totalInputs[j] == null) {
+                    total = null;
+                    break;
+                }
+                else {
+                    total += Number(totalInputs[j]);
+                }
+            }
+            totalInputs['Y'] = total ? total.toFixed(2) : null;
             return totalInputs;
         },
         totalExemptVAT: function() {
@@ -126,6 +169,24 @@ new Vue({
                         two: null
                     };
                 }
+            }
+            // Try to calculate the final
+            let percents = this.percentsExempt,
+                totals = this.totalInputs;
+            if (percents['Y'] && totals['Y']) {
+                let totalExemptInput = getDifferentTotal(exemptInput),
+                    yearTotalInputs = getDifferentTotal(totalInputs);
+
+                testResults['Y'] = {
+                    one: totalExemptInput < (quarterlyAllowance * 4),
+                    two: totalExemptInput < (yearTotalInputs / 2)
+                };
+            }
+            else {
+                testResults['Y'] = {
+                    one: null,
+                    two: null
+                };
             }
             return testResults;
         }

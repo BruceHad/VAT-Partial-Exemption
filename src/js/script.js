@@ -70,6 +70,12 @@ new Vue({
             }
         }
     },
+    methods: {
+        reset: function(){
+            console.log("hello");
+            this.state = initialState;
+        }
+    },
     computed: {
         percentsExempt: function() {
             let exempt = this.state.outputs.exempt,

@@ -1,34 +1,22 @@
 import Vue from 'vue';
 
-const initialState = {
+const o = {
     outputs: {
-        taxable: { Q1: { value: null, tabOrder: 1 }, Q2: { value: null, tabOrder: 6 }, Q3: { value: null, tabOrder: 11 }, Q4: { value: null, tabOrder: 16 } },
-        exempt: { Q1: { value: null, tabOrder: 2 }, Q2: { value: null, tabOrder: 7 }, Q3: { value: null, tabOrder: 12 }, Q4: { value: null, tabOrder: 17 } }
+        taxable: { Q1: null, Q2: null, Q3: null, Q4: null },
+        exempt: { Q1: null, Q2: null, Q3: null, Q4: null }
 
     },
     inputVAT: {
-        taxable: { Q1: { value: null, tabOrder: 3 }, Q2: { value: null, tabOrder: 8 }, Q3: { value: null, tabOrder: 13 }, Q4: { value: null, tabOrder: 18 } },
-        exempt: { Q1: { value: null, tabOrder: 4 }, Q2: { value: null, tabOrder: 9 }, Q3: { value: null, tabOrder: 14 }, Q4: { value: null, tabOrder: 19 } },
-        residual: { Q1: { value: null, tabOrder: 5 }, Q2: { value: null, tabOrder: 10 }, Q3: { value: null, tabOrder: 15 }, Q4: { value: null, tabOrder: 20 } }
+        taxable: { Q1: null, Q2: null, Q3: null, Q4: null },
+        exempt: { Q1: null, Q2: null, Q3: null, Q4: null },
+        residual: { Q1: null, Q2: null, Q3: null, Q4: null }
     }
 };
+const initialState = JSON.stringify(o);
 
-/** Supporting functions
- */
+
+/** Supporting functions */
 function getTotal(q) {
-    let total = 0;
-    for (var quarter in q) {
-        if (q[quarter].value) {
-            total += q[quarter].value;
-        }
-        else {
-            return null;
-        }
-    }
-    return total;
-}
-
-function getDifferentTotal(q) {
     let total = 0;
     for (var quarter in q) {
         if (q[quarter]) {
@@ -57,42 +45,32 @@ new Vue({
         monthlyAllowance: 625,
         quarters: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4'],
         quarters2: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Final'],
-        state: {
-            outputs: {
-                taxable: { Q1: { value: 200.50, tabOrder: 1 }, Q2: { value: null, tabOrder: 6 }, Q3: { value: null, tabOrder: 11 }, Q4: { value: null, tabOrder: 16 } },
-                exempt: { Q1: { value: 100, tabOrder: 2 }, Q2: { value: null, tabOrder: 7 }, Q3: { value: null, tabOrder: 12 }, Q4: { value: null, tabOrder: 17 } }
-
-            },
-            inputVAT: {
-                taxable: { Q1: { value: 250.55, tabOrder: 3 }, Q2: { value: null, tabOrder: 8 }, Q3: { value: null, tabOrder: 13 }, Q4: { value: null, tabOrder: 18 } },
-                exempt: { Q1: { value: 100, tabOrder: 4 }, Q2: { value: null, tabOrder: 9 }, Q3: { value: null, tabOrder: 14 }, Q4: { value: null, tabOrder: 19 } },
-                residual: { Q1: { value: 10.23, tabOrder: 5 }, Q2: { value: null, tabOrder: 10 }, Q3: { value: null, tabOrder: 15 }, Q4: { value: null, tabOrder: 20 } }
-            }
-        }
+        state: JSON.parse(initialState)
     },
     methods: {
-        reset: function(){
-            console.log("hello");
-            this.state = initialState;
+        reset: function() {
+            this.state = JSON.parse(initialState);
         }
     },
     computed: {
         percentsExempt: function() {
+            // Percent of Total outputs/sales that Exempt.
+            // Each quarter:
             let exempt = this.state.outputs.exempt,
                 taxable = this.state.outputs.taxable,
                 percentsExempt = {};
             for (var i in exempt) {
-                if (exempt[i].value == null || taxable[i].value == null) {
+                if (exempt[i] == null || taxable[i] == null) {
                     percentsExempt[i] = null;
                 }
-                else if (exempt[i].value + taxable[i].value === 0) {
+                else if (exempt[i] + taxable[i] === 0) {
                     percentsExempt[i] = Number(0).toFixed(2);
                 }
                 else {
-                    percentsExempt[i] = (exempt[i].value / (exempt[i].value + taxable[i].value) * 100).toFixed(2);
+                    percentsExempt[i] = (exempt[i] / (exempt[i] + taxable[i]) * 100).toFixed(2);
                 }
             }
-            // now calculate yearly total
+            // Full year:
             let totalTaxable = getTotal(this.state.outputs.taxable),
                 totalExempt = getTotal(this.state.outputs.exempt);
             if (totalTaxable && totalExempt) {
@@ -104,34 +82,26 @@ new Vue({
             return percentsExempt;
         },
         totalInputs: function() {
+            // Total of inputs/purchases (exempt + taxable + residual)
+
             let exempt = this.state.inputVAT.exempt,
                 taxable = this.state.inputVAT.taxable,
                 residual = this.state.inputVAT.residual,
                 totalInputs = {};
+
+            // Quarters:
             for (var i in exempt) {
-                if (exempt[i].value != null &&
-                    taxable[i].value != null &&
-                    residual[i].value != null) {
-                    totalInputs[i] = (exempt[i].value +
-                            taxable[i].value +
-                            residual[i].value)
-                        .toFixed(2);
+                if (exempt[i] != null &&
+                    taxable[i] != null &&
+                    residual[i] != null) {
+                    totalInputs[i] = (exempt[i] + taxable[i] + residual[i]).toFixed(2);
                 }
                 else {
                     totalInputs[i] = null;
                 }
             }
-            // Now try to calculate the yearly total
-            let total = 0;
-            for (var j in totalInputs) {
-                if (totalInputs[j] == null) {
-                    total = null;
-                    break;
-                }
-                else {
-                    total += Number(totalInputs[j]);
-                }
-            }
+            // Year:
+            let total = getTotal(totalInputs);
             totalInputs['Y'] = total ? total.toFixed(2) : null;
             return totalInputs;
         },
@@ -146,9 +116,9 @@ new Vue({
                 if (i === 'Y') {
                     continue;
                 }
-                if (percentsExempt[i] != null && residual[i].value != null) {
-                    let erv = (percentsExempt[i] / 100 * residual[i].value);
-                    totalExempt[i] = (erv + exempt[i].value).toFixed(2);
+                if (percentsExempt[i] != null && residual[i] != null) {
+                    let erv = (percentsExempt[i] / 100 * residual[i]);
+                    totalExempt[i] = (erv + exempt[i]).toFixed(2);
                 }
                 else {
                     totalExempt[i] = null;
@@ -157,42 +127,46 @@ new Vue({
             return totalExempt;
         },
         deminimis: function() {
-            // Is the Exempt Input < (£625 * 3)
+            // Test 1: Is the Exempt Input < (£625 * 3)
             let quarterlyAllowance = this.monthlyAllowance * 3,
                 exemptInput = this.totalExemptVAT,
                 totalInputs = this.totalInputs,
-                testResults = {};
+                testResults = {
+                    test_one: {},
+                    test_two: {},
+                    deminimis: {}
+                };
             for (var i in exemptInput) {
+                if (i === 'Q4') continue;
                 if (exemptInput[i] != null && totalInputs[i] != null) {
-                    testResults[i] = {
-                        one: exemptInput[i] < quarterlyAllowance,
-                        two: exemptInput[i] < (totalInputs[i] / 2)
-                    };
+                    let test1 = exemptInput[i] < quarterlyAllowance;
+                    let test2 = exemptInput[i] < (totalInputs[i] / 2);
+                    testResults['test_one'][i] = test1;
+                    testResults['test_two'][i] = test2;
+                    testResults['deminimis'][i] = test1 && test2;
                 }
                 else {
-                    testResults[i] = {
-                        one: null,
-                        two: null
-                    };
+                    testResults['test_one'][i] = null;
+                    testResults['test_two'][i] = null;
+                    testResults['deminimis'][i] = null;
                 }
             }
             // Try to calculate the final
             let percents = this.percentsExempt,
                 totals = this.totalInputs;
             if (percents['Y'] && totals['Y']) {
-                let totalExemptInput = getDifferentTotal(exemptInput),
-                    yearTotalInputs = getDifferentTotal(totalInputs);
-
-                testResults['Y'] = {
-                    one: totalExemptInput < (quarterlyAllowance * 4),
-                    two: totalExemptInput < (yearTotalInputs / 2)
-                };
+                let totalExemptInput = getTotal(exemptInput),
+                    yearTotalInputs = getTotal(totalInputs);
+                let test1 = totalExemptInput < (quarterlyAllowance * 4);
+                let test2 = totalExemptInput < (yearTotalInputs / 2);
+                testResults['test_one']['Y'] = test1;
+                testResults['test_two']['Y'] = test2;
+                testResults['deminimis']['Y'] = test1 && test2;
             }
             else {
-                testResults['Y'] = {
-                    one: null,
-                    two: null
-                };
+                testResults['test_one']['Y'] = null;
+                testResults['test_two']['Y'] = null;
+                testResults['deminimis']['Y'] = null;
             }
             return testResults;
         }

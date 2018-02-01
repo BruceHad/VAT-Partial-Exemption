@@ -45,7 +45,7 @@
                         <tr>
                             <td class="first-column">Percent Exempt</td>
                             <td v-for="(value, key) in percentsExempt" class="td-number" v-if="key != 'Y'">
-                                <span v-if="percentsExempt[key]">${percentsExempt[key]}%</span>
+                                <span class="td-percent">${percentsExempt[key]}</span>
                             </td>
                         </tr>
                         <tr>
@@ -53,7 +53,7 @@
                                 Full Year's Average
                             </td>
                             <td class="td-number">
-                                <span v-if="percentsExempt['Y']">${percentsExempt['Y']}%</span>
+                                <span class="td-percent">${percentsExempt['Y']}</span>
                             </td>
                         </tr>
                     </table>

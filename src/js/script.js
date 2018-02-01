@@ -115,22 +115,23 @@ new Vue({
             let exempt = this.state.inputVAT.exempt,
                 taxable = this.state.inputVAT.taxable,
                 residual = this.state.inputVAT.residual,
+                total = 0,
+                noNulls = true,
                 totalInputs = {};
 
             // Quarters:
             for (var i in exempt) {
-                if (exempt[i] != null &&
-                    taxable[i] != null &&
-                    residual[i] != null) {
+                if (isValid(exempt[i]) && isValid(taxable[i]) && isValid(residual[i])) {
                     totalInputs[i] = (exempt[i] + taxable[i] + residual[i]).toFixed(2);
+                    total += Number(totalInputs[i]);
                 }
                 else {
                     totalInputs[i] = null;
+                    noNulls = false;
                 }
             }
             // Year:
-            let total = getTotal(totalInputs);
-            totalInputs['Y'] = total ? total.toFixed(2) : null;
+            totalInputs['Y'] = noNulls ? total.toFixed(2) : null;
             return totalInputs;
         },
         totalExemptVAT: function() {

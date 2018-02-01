@@ -29,6 +29,25 @@ function getTotal(q) {
     return total;
 }
 
+function isValid(x){
+    return typeof x === "number" && x >= 0 && x <= 1000000000;
+}
+
+function roundUp(num, precision){
+    precision = Math.pow(10, precision);
+    return Math.ceil(num * precision) / precision;
+}
+
+// Test
+// console.log(roundUp(1.1, 0), 2);
+// console.log(roundUp(1.5, 0), 2);
+// console.log(roundUp(1.112, 2), 1.12);
+// console.log(roundUp(1.115, 2), 1.12);
+// console.log(roundUp(1.1, 0), 2);
+// console.log(roundUp(1.5, 0), 2);
+// console.log(roundUp(1.112, 2), 1.12);
+// console.log(roundUp(1.115, 2), 1.12);
+
 Vue.component('c-true', {
     template: '<span>&#10004; Yes!</span>'
 });
@@ -45,7 +64,8 @@ new Vue({
         monthlyAllowance: 625,
         quarters: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4'],
         quarters2: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Final'],
-        state: JSON.parse(initialState)
+        state: JSON.parse(initialState),
+        decimalPlaces: 0
     },
     methods: {
         reset: function() {
@@ -60,14 +80,14 @@ new Vue({
                 taxable = this.state.outputs.taxable,
                 percentsExempt = {};
             for (var i in exempt) {
-                if (exempt[i] == null || taxable[i] == null) {
+                if ( ! isValid(exempt[i]) || ! isValid(taxable[i])) {
                     percentsExempt[i] = null;
                 }
                 else if (exempt[i] + taxable[i] === 0) {
-                    percentsExempt[i] = Number(0).toFixed(2);
+                    percentsExempt[i] = roundUp(Number(0), this.decimalPlaces);
                 }
                 else {
-                    percentsExempt[i] = (exempt[i] / (exempt[i] + taxable[i]) * 100).toFixed(2);
+                    percentsExempt[i] = roundUp((exempt[i] / (exempt[i] + taxable[i]) * 100), this.decimalPlaces);
                 }
             }
             // Full year:

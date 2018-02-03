@@ -52,11 +52,11 @@ function roundUp(num, precision){
 // console.log(roundUp(Number(0), 0));
 
 Vue.component('c-true', {
-    template: '<span>&#10004; Yes!</span>'
+    template: '<span>&#10004; Pass!</span>'
 });
 
 Vue.component('c-false', {
-    template: '<span>&#10008; No!</span>'
+    template: '<span>&#10008; Fail</span>'
 });
 
 new Vue({

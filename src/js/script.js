@@ -68,7 +68,18 @@ new Vue({
         quarters: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4', 'Yearly Total'],
         quarters2: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Final'],
         state: JSON.parse(initialState),
-        decimalPlaces: 0
+        decimalPlaces: 0,
+        tabOrder: {
+            outputs: {
+                taxable: {Q1: 1, Q2: 6, Q3: 11, Q4: 16},
+                exempt: {Q1: 2, Q2: 7, Q3: 12, Q4: 17},
+            },
+            inputs: {
+                taxable: {Q1: 3, Q2: 8, Q3: 13, Q4: 18},
+                exempt: {Q1: 4, Q2: 9, Q3: 14, Q4: 19},
+                residual: {Q1: 5, Q2: 10, Q3: 15, Q4: 20}
+            }
+        }
     },
     methods: {
         reset: function() {
@@ -83,7 +94,6 @@ new Vue({
           };
         },
         totalYearlyInputs: function() {
-            console.log(this.state.inputVAT.taxable, getTotal(this.state.inputVAT.taxable));
             return {
                 taxable: getTotal(this.state.inputVAT.taxable),
                 exempt: getTotal(this.state.inputVAT.exempt),

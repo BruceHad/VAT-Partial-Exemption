@@ -65,7 +65,7 @@ new Vue({
     data: {
         heading: 'App Heading',
         monthlyAllowance: 625,
-        quarters: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4'],
+        quarters: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4', 'Yearly Total'],
         quarters2: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Final'],
         state: JSON.parse(initialState),
         decimalPlaces: 0
@@ -76,6 +76,20 @@ new Vue({
         }
     },
     computed: {
+        totalYearlyOutputs: function() {
+          return  {
+              taxable: getTotal(this.state.outputs.taxable),
+              exempt: getTotal(this.state.outputs.exempt)
+          };
+        },
+        totalYearlyInputs: function() {
+            console.log(this.state.inputVAT.taxable, getTotal(this.state.inputVAT.taxable));
+            return {
+                taxable: getTotal(this.state.inputVAT.taxable),
+                exempt: getTotal(this.state.inputVAT.exempt),
+                residual: getTotal(this.state.inputVAT.residual)
+            };
+        },
         percentsExempt: function() {
             // Percent of Total outputs/sales that Exempt.
             // Each quarter:

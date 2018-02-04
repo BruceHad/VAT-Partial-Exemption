@@ -46,20 +46,25 @@ td.td-number {
 }
 
 td span {
-
     display: block;
     margin: 0 12px;
+    padding: 6px 12px;
 }
 
 .table {
     table-layout: fixed;
-    td {
-        max-width: 72.5% / 3;
-    }
     .first-column {
-        width: 27.5%;
+        width: 20%;
         text-align: right;
     }
+}
+
+table.four-column td {
+    max-width: 80% / 3;
+}
+
+table.four-column td {
+    max-width: 80% / 4;
 }
 
 tr.results {

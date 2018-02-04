@@ -32,7 +32,7 @@ function getTotal(q) {
 function isValid(x){
     // Checks input is valid number in expected range.
     // zero is okay
-    return (typeof x === "number" && x >= 0 && x <= 1000000000);
+    return (typeof x === "number" && x >= 0 && x <= 100000000);
 }
 
 function roundUp(num, precision){

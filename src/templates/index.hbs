@@ -38,7 +38,10 @@
                         <tr v-for="(row, rowkey) in state.outputs">
                             <td class="first-column">${rowkey}</td>
                             <td v-for="(value, key) in state.outputs[rowkey]">
-                                <input type="number" class="form-control" v-model.number="state.outputs[rowkey][key]" :tabindex="tabOrder['outputs'][rowkey][key]" />
+                                <input type="number" class="form-control" 
+                                    v-model.number="state.outputs[rowkey][key]" 
+                                    :tabindex="tabOrder['outputs'][rowkey][key]" 
+                                    step="0.01" min="0" max="100000000" />
                             </td>
                             <td class="td-number">
                                 <span>${totalYearlyOutputs[rowkey]}</span>
@@ -63,7 +66,10 @@
                         <tr v-for="(row, rowkey) in state.inputVAT">
                             <td class="first-column">${rowkey}</td>
                             <td v-for="(value, key) in state.inputVAT[rowkey]">
-                                <input type="number" class="form-control" v-model.number="state.inputVAT[rowkey][key]" :tabindex="tabOrder['inputs'][rowkey][key]" />
+                                <input type="number" class="form-control" 
+                                    v-model.number="state.inputVAT[rowkey][key]" 
+                                    :tabindex="tabOrder['inputs'][rowkey][key]" 
+                                    step="0.01" min="0" max="100000000" />
                             </td>
                             <td class="td-number">
                                 <span>${totalYearlyInputs[rowkey]}</span>

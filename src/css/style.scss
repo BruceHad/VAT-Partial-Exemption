@@ -82,6 +82,11 @@ tr.results {
     }
 }
 
+input:focus:invalid, input:invalid {
+    border-color: red;
+    background-color: #FFE0E0;
+}
+
 /** Hacks **/
 
 // Hide controls on number <input> fields

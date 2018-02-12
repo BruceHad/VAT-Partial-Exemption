@@ -20,15 +20,15 @@ let states = {};
 
 
 /** Supporting functions */
-function isNumber(n) { 
+function isNumber(n) {
     return !isNaN(parseFloat(n)) && !isNaN(n - 0);
 }
 
-function round(x){
+function round(x) {
     // basic rounding and convert to fixed decimal places.
     let places = 2;
-    if(x === null) return null;
-    if(typeof x === "number") {
+    if (x === null) return null;
+    if (typeof x === "number") {
         return x.toFixed(places);
     }
     else {
@@ -39,7 +39,7 @@ function round(x){
 function roundUp(num, precision) {
     // Rounding up for the Percentage calculation only
     let shift = Math.pow(10, precision);
-    let result  = (Math.ceil(num * shift) / shift);
+    let result = (Math.ceil(num * shift) / shift);
     return result.toFixed(precision);
 }
 
@@ -77,14 +77,26 @@ function getState(bid) {
     }
 }
 
-function saveState(bid, state){
+function saveState(bid, state) {
+    // updates the state for supplied bid
     states[bid] = state;
+}
+
+function getFullState() {
+    // Returns the states variable so it can be saved.
+    return states;
+}
+
+function loadState(loadedState) {
+    // replaces the states variable
+    // console.log(loadedState);
+    states = loadedState;
 }
 
 function getBusinessList(current) {
     let businesses = states;
     let list = [];
-    for (var i in businesses){
+    for (var i in businesses) {
         list.push({
             id: i,
             name: businesses[i].businessName,
@@ -106,14 +118,14 @@ function getBusinessList(current) {
 // console.log(roundUp(Number(0), 0));
 
 Vue.component('test-result', {
-    template:`
+    template: `
 <div class='test-result'>
     <span v-if="result === true" class="fill-cell pass">&#10004;<br />Pass</span>
     <span v-else-if="result === false" class="fill-cell fail">&#10008;<br />Fail</span>
     <span v-else class="fill-cell blank">&nbsp;</span>
 </div>`,
     props: {
-        'result': {type: Boolean}
+        'result': { type: Boolean }
     }
 });
 
@@ -142,7 +154,7 @@ new Vue({
             outputs: {
                 taxable: "Taxable Sales (Zero and Standard Rated)",
                 exempt: "Exempt Sales"
-                
+
             },
             inputs: {
                 taxable: "Taxable Input Tax",
@@ -156,7 +168,8 @@ new Vue({
             }
         },
         editingName: false,
-        detailedView: true
+        detailedView: true,
+        files: []
     },
     methods: {
         reset: function() {
@@ -181,13 +194,31 @@ new Vue({
             this.bid = getId();
         },
         switchView: function() {
-            this.detailedView = ! this.detailedView;
+            this.detailedView = !this.detailedView;
+        },
+        saveState: function() {
+            // make sure and save current state first
+            saveState(this.bid, this.state);
+            let state = JSON.stringify(getFullState());
+            window.open('data:text/plain;charset=utf-8,' +
+                encodeURIComponent(state), "_blank");
+        },
+        loadState: function() {
+            this.files = this.$refs.myFiles.files;
+            // console.log(this.files);
+            var reader = new FileReader();
+            reader.onload = (event) => {
+                let result = JSON.parse(event.target.result);
+                loadState(result);
+                this.bid = Object.keys(result)[0]; // forces update
+            };
+            reader.readAsText(this.files[0]);
         }
     },
     watch: {
         bid: function(newBID, oldBID) {
-            if(newBID === oldBID) return;
-            
+            if (newBID === oldBID) return;
+
             // Save current/old business state
             saveState(oldBID, this.state);
             // Load new business' state or create new state
@@ -197,25 +228,24 @@ new Vue({
         }
     },
     computed: {
-        businesses: function(){
-            return getBusinessList(this.bid); 
+        businesses: function() {
+            return getBusinessList(this.bid);
         },
-        
         /** User entered data */
         totalYearlyOutputs: function() {
             return {
-                taxable:    round(getTotal(this.state.outputs.taxable)),
-                exempt:     round(getTotal(this.state.outputs.exempt))
+                taxable: round(getTotal(this.state.outputs.taxable)),
+                exempt: round(getTotal(this.state.outputs.exempt))
             };
         },
         totalYearlyInputs: function() {
             return {
-                taxable:    round(getTotal(this.state.inputVAT.taxable)),
-                exempt:     round(getTotal(this.state.inputVAT.exempt)),
-                residual:   round(getTotal(this.state.inputVAT.residual))
+                taxable: round(getTotal(this.state.inputVAT.taxable)),
+                exempt: round(getTotal(this.state.inputVAT.exempt)),
+                residual: round(getTotal(this.state.inputVAT.residual))
             };
         },
-        
+
         /** Calculated Values */
         percentsExempt: function() {
             // Percent of Total outputs/sales that Exempt.
@@ -283,7 +313,7 @@ new Vue({
                 residual = this.state.inputVAT.residual,
                 exemptResidualVAT = {};
             for (var i in percentsExempt) {
-                if(i === 'Y') continue;
+                if (i === 'Y') continue;
                 if (percentsExempt[i] != null && residual[i] != null) {
                     let result = percentsExempt[i] / 100 * residual[i];
                     exemptResidualVAT[i] = round(result);
@@ -293,10 +323,10 @@ new Vue({
                 }
             }
             // yearly
-            if(percentsExempt['Y'] != null 
-                && this.totalYearlyInputs.residual != null){
-                    let r = this.totalYearlyInputs.residual;
-                    let result = percentsExempt['Y'] / 100  * r;
+            if (percentsExempt['Y'] != null &&
+                this.totalYearlyInputs.residual != null) {
+                let r = this.totalYearlyInputs.residual;
+                let result = percentsExempt['Y'] / 100 * r;
                 exemptResidualVAT['Y'] = round(result);
             }
             else {
@@ -318,11 +348,11 @@ new Vue({
                     totalExempt[i] = null;
                 }
             }
-            
+
             // Yearly 
-            if(erv['Y'] != null && this.totalYearlyInputs.exempt != null){
-                let result = Number(erv['Y']) 
-                    + Number(this.totalYearlyInputs.exempt);
+            if (erv['Y'] != null && this.totalYearlyInputs.exempt != null) {
+                let result = Number(erv['Y']) +
+                    Number(this.totalYearlyInputs.exempt);
                 totalExempt['Y'] = round(result);
             }
             else {
@@ -361,7 +391,7 @@ new Vue({
             if (exemptInputs['Y'] && totalInputs['Y']) {
                 let test1 = exemptInputs['Y'] < (quarterlyAllowance * 4);
                 let test2 = exemptInputs['Y'] < (totalInputs['Y'] / 2);
-                        
+
                 testResults['test_one']['Y'] = test1;
                 testResults['test_two']['Y'] = test2;
                 testResults['deminimis']['Y'] = test1 && test2;

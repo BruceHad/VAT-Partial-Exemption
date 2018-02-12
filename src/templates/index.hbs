@@ -53,6 +53,17 @@
                             </option>
                         </select>
                         </div>
+
+                        <p>You can save all your data and load it again at a later date.</p>
+                        <p> To save: Click the Save button below and then save the resulting dataset as a text file.</p>
+                        <div class="form-group">
+                            <button type="button" class="btn btn-default" v-on:click="saveState">Save All</button>
+                        </div>
+                        <p>The file can be loaded again:</p>
+                        <div class="form-group">
+                            <input type="file" ref="myFiles" 
+                                class="form-control" @change="loadState" />
+                        </div>
                     </div>
             </section>
 

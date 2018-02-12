@@ -210,6 +210,10 @@ section {
         input:invalid {
             border-color: red; // background-color: #FFE0E0;
         }
+        input[type="file"] {
+            // line-height: 30px;
+            height:100%;
+        }
     }
 }
 

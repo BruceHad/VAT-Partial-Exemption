@@ -3,7 +3,7 @@ import Vue from 'vue';
 const initialState = {
     businessName: "",
     outputs: {
-        taxable: { Q1: 1, Q2: 1, Q3: 1, Q4: 1 },
+        taxable: { Q1: 1, Q2: 1, Q3: 1, Q4: 10000000 },
         exempt: { Q1: 1, Q2: 1, Q3: 1, Q4: 1 }
 
     },
@@ -170,6 +170,13 @@ new Vue({
         editingName: false,
         detailedView: true,
         files: []
+    },
+    created: function() {
+        window.addEventListener('beforeunload', function(e) {
+            var confirmationMessage = "Message";
+            e.returnValue = confirmationMessage; // Gecko, Trident, Chrome 34+
+            return confirmationMessage; // Gecko, WebKit, Chrome <34
+        });
     },
     methods: {
         reset: function() {

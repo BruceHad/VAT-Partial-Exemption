@@ -1,44 +1,247 @@
 @import 'bootstrap';
+/* latin-ext */
 
-html {
+@font-face {
+    font-family: 'Bitter';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Bitter Regular'),
+    url(Bitter-Regular.ttf) format('truetype');
+}
+
+/** Colours */
+
+$splash: #13B6D8;
+$darker: #005566;
+$pale: #D8E2E6;
+$font: #333;
+
+$fail: #78AB46;
+$pass: #FBEC5D;
+
+/** font sizes */
+
+$v-large: 1.75rem;
+$large: 1.5rem;
+$small: 0.875rem;
+$v-small: 0.75rem;
+
+/** Hacks **/
+
+// Hide controls on number <input> fields
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0;
+    /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+// Prevent splash of template files
+[v-cloak] {
+    visibility: hidden;
+    border: 1px solid red;
+}
+
+/** Core and Layout */
+
+html,
+body {
     font-family: sans-serif;
-    color: #333;
+    font-size: 16px;
+    color: $font;
+    line-height: 1.4;
 }
 
-.div-header,
-.div-footer {
-    background-color: #f1f1f1;
-    padding: 30px 15px;
-    h1 {
-        color: #347DBD;
-        margin: 0;
-        padding: 0;
-        font-size: 42px;
-    }
-    p {
-        margin: 0;
-        padding: 0;
-        font-size: 18px;
-    }
+a {
+    text-decoration: underline;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+h1,
+h2 {
+    font-family: Bitter, serif;
+    font-weight: 400;
+}
+
+h1 {
+    font-size: $v-large;
+}
+
+h2 {
+    font-size: $large;
+    color: $splash;
+}
+
+h3 {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+a {
+    color: $darker;
+}
+
+.ishidden {
+    display: none;
 }
 
 
+@media (min-width: 768px) {
+    h2,
+    h3 {
+        margin: 0;
+        padding: 0;
+    }
+}
 
-td,
-th {
+th,
+td {
     text-align: center;
 }
 
-.text {
-    max-width: 700px;
+th {
+    color: $darker;
+    font-size: $small;
+}
+
+
+/** Elements */
+
+.div-header {
+    background-color: $splash;
+    color: white;
+    padding: 15px;
+
+    a {
+        color: $pale;
+    }
+
+    h1 {
+        margin: 0;
+        padding: 0;
+        font-size: 28px;
+    }
+    p {
+        padding: 0;
+        margin: 0;
+        font-family: Bitter, serif;
+    }
+}
+
+
+.div-footer {
+    background-color: $darker;
+    color: $pale;
+    padding: 30px 15px;
+    font-size: $small;
+    a {
+        color: white;
+    }
 }
 
 section {
-    padding: 30px 0;
+    padding: 15px 0 30px 0;
+    .section-description {
+        font-style: italic;
+        line-height: 1.2;
+        font-size: $small;
+        margin: 0.5em 0;
+    }
 }
+
+
+
+.introduction {
+    background-color: $pale;
+    border-top: 1px dashed $splash;
+
+    blockquote {
+        margin: 0 7.5% 10px 7.5%;
+        padding: 12px 15px;
+        font-size: $small;
+        font-family: Bitter, serif;
+    }
+    
+    .controls {
+        padding: 20px;
+        margin: 0 15px;
+        border: 1px dotted $splash;
+        border-radius: 5px; // background-color: $pale;
+        font-size: $small;
+        p {
+            margin: 5px 0;
+            padding: 0;
+        }
+        label {
+            font-weight: normal;
+            font-style: italic;
+            margin: 5px 0;
+            padding: 0;
+
+        }
+        label::after {
+            content: ":";
+        }
+        small {
+            color: $darker;
+            font-size: $v-small;
+        }
+        input[type="text"] {
+            border: 1px dashed #666;
+            border-radius: 4px;
+            background-color: white;
+            padding: 6px 12px;
+            margin: 5px 0;
+            width: 100%;
+        }
+        input[type="text"]:disabled {
+            background-color: #f1f1f1;
+            border-color: #ddd;
+        }
+        input:focus:invalid,
+        input:invalid {
+            border-color: red; // background-color: #FFE0E0;
+        }
+    }
+}
+
+.div-checkbox {
+    h3 {
+        font-size: 1rem;
+        padding-bottom: 2px;
+        width: 120px;
+        text-align: center;
+    }
+    .btn-lg {
+        font-size: $small;
+        padding: 8px 0;
+        width: 90px;
+    }
+    .btn-primary {
+        background-color: $darker;
+        border-color: $splash;
+    }
+    .btn-primary.active {
+        background-color: $pale;
+        color: $font;
+        border-color: $darker;
+    }
+}
+
+
+
 
 /** Tables 
  */
+
 input[type='number'],
 td.td-number {
     text-align: right;
@@ -54,6 +257,7 @@ td span {
     table-layout: fixed;
     .first-column {
         width: 20%;
+        font-size: $small;
         text-align: right;
     }
 }
@@ -66,55 +270,12 @@ table.four-column td {
     max-width: 80% / 4;
 }
 
-tr.results {
-
-    div {
-        margin: -5px;
-        padding: 5px;
+.test-results {
+    
+    .fail {
+        background-color: $fail;
     }
     .pass {
-        background-color: #78AB46;
+        background-color: $pass;
     }
-
-    .fail {
-        background-color: #FBEC5D;
-    }
-}
-
-/** Form elements
- */
-
-input.text {
-    display: inline-block;
-    border: 1px dashed #666;
-    border-radius: 4px;
-    background-color: white;
-    padding: 6px 12px;
-    min-width: 300px;
-}
-
-input.text:disabled {
-    background-color: #f1f1f1;
-    border-color: #ddd;
-}
-
-input:focus:invalid,
-input:invalid {
-    border-color: red;
-    // background-color: #FFE0E0;
-}
-
-/** Hacks **/
-
-// Hide controls on number <input> fields
-input[type='number'] {
-    -moz-appearance: textfield;
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0;
-    /* <-- Apparently some margin are still there even though it's hidden */
 }

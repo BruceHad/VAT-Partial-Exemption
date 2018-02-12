@@ -32,7 +32,7 @@ gulp.task('html', function() {
         batch: ['./src/templates/partials']
     };
 
-    gulp.src('src/templates/*.hbs')
+    gulp.src('src/templates/**/*.hbs')
         .pipe(data(function(file) {
             // get data from json
             return JSON.parse(fs.readFileSync('./src/data/tr-data.json'));
@@ -50,10 +50,14 @@ gulp.task('html', function() {
 // if using webpack and modules
 gulp.task('js', function() {
     // Run js through babel and export to dist
-    return gulp.src('src/js/script.js')
+    gulp.src('src/js/script.js')
         .pipe(webpack(require('./webpack.config.js')))
         .pipe(rename('script.js'))
         .pipe(gulp.dest('./dist/scripts'));
+    // Copy bs.js    
+    // gulp.src('src/js/bs.js')
+    //     .pipe(webpack(require('./webpack.config.js')))
+    //     .pipe(gulp.dest('./dist/scripts'));
 });
 
 gulp.task('css', function() {
@@ -64,6 +68,10 @@ gulp.task('css', function() {
             includePaths: [bootstrapPath]
         }).on('error', sass.logError))
         .pipe(gulp.dest('./dist/css'));
+        
+    gulp.src('src/css/*.ttf')
+        .pipe(gulp.dest('./dist/css'));
+        
 });
 
 gulp.task('images', function() {

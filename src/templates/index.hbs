@@ -16,13 +16,13 @@
 
         {{> header}}
 
-
-
         <div class="container-fluid" v-cloak>
+            
             {{> calculation}}
+            
             <section class="introduction row">
 
-                <div class="col col-md-7">
+                <div class="col col-lg-7">
                     <p>This tool will help you calculate if your business' partial exemption status and whether all input tax can be recovered.</p>
                     <blockquote cite="https://www.gov.uk/government/publications/vat-notice-706-partial-exemption/vat-notice-706-partial-exemption">
                         <p>A business is partly exempt if it makes, or intends to make, both taxable and exempt supplies and incurs tax on costs which relate to both.</p>
@@ -31,7 +31,7 @@
                     </blockquote>
                     <p>You just have to enter Sales and VAT data for the business. The calculator will then apply the de-minimis tests and determine the status.</p>
                 </div>
-                <div class="col col-md-5">
+                <div class="col col-lg-5">
                     <div class="controls">
                         <h3>Controls</h3>
                         <p>You can give your business a name.</p>
@@ -61,15 +61,11 @@
                         </div>
                         <p>The file can be loaded again:</p>
                         <div class="form-group">
-                            <input type="file" ref="myFiles" 
-                                class="form-control" @change="loadState" />
+                            <input type="file" ref="myFiles" class="form-control" @change="loadState" />
                         </div>
                     </div>
+                </div>
             </section>
-
-
-            </div>
-            <!-- end app -->
             {{> footer}}
         </div>
 

@@ -15,6 +15,7 @@ $splash: #13B6D8;
 $darker: #005566;
 $pale: #D8E2E6;
 $font: #333;
+$contrast: #EFED51;
 
 $fail: #78AB46;
 $pass: #FBEC5D;
@@ -221,26 +222,28 @@ section {
     }
 }
 
-.div-checkbox {
-    h3 {
-        font-size: 1rem;
-        padding-bottom: 2px;
-        width: 120px;
-        text-align: center;
-    }
+.btn-toggle {
     .btn-lg {
         font-size: $small;
         padding: 8px 0;
         width: 90px;
     }
+    .btn:first-child:not(:last-child){
+        border-right: 0;
+    }
+    .btn:last-child:not(:first-child) {
+        border-left: 0;
+    }
     .btn-primary {
         background-color: $darker;
-        border-color: $splash;
+        border-color: $darker;
+        padding-top: 7px; padding-bottom: 9px;
     }
     .btn-primary.active {
-        background-color: $pale;
+        background-color: $contrast;
         color: $font;
         border-color: $darker;
+        padding-top: 9px; padding-bottom: 7px;
     }
 }
 

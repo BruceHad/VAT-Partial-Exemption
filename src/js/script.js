@@ -3,14 +3,14 @@ import Vue from 'vue';
 const initialState = {
     businessName: "",
     outputs: {
-        taxable: { Q1: 1, Q2: 1, Q3: 1, Q4: 10000000 },
-        exempt: { Q1: 1, Q2: 1, Q3: 1, Q4: 1 }
+        taxable: { Q1: null, Q2: null, Q3: null, Q4: null },
+        exempt: { Q1: null, Q2: null, Q3: null, Q4: null }
 
     },
     inputVAT: {
-        taxable: { Q1: 1, Q2: 1, Q3: 1, Q4: 1 },
-        exempt: { Q1: 1, Q2: 1, Q3: 1, Q4: 1 },
-        residual: { Q1: 1, Q2: 1, Q3: 1, Q4: 1 }
+        taxable: { Q1: null, Q2: null, Q3: null, Q4: null },
+        exempt: { Q1: null, Q2: null, Q3: null, Q4: null },
+        residual: { Q1: null, Q2: null, Q3: null, Q4: null }
     }
 };
 

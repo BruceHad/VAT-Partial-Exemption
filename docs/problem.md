@@ -22,7 +22,7 @@ If a business is partly exempt, it may not be able to recover all input tax. You
 
 _Taxable Input Tax_ is tax paid on Inputs that relate to Taxable **Outputs**. This is normally recoverable. 
 
-Conversely, _Exempt Input Tax_ is tax paid on Inputs that relate to Exempt **Outputs**. These are not normally recoverable.
+Conversely, _Exempt Input Tax_ is tax paid on Inputs that relate to Exempt **Outputs**. This is not normally recoverable.
 
 _Residual Input Tax_ is tax paid on Inputs that relate to both Taxable and Exempt supplies or on general business overheads. Generally only a portion of this is recoverable.
 

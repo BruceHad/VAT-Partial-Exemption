@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "gulp",
     "start": "cd dist && http-server",
+    "build": "NODE_ENV=production gulp",
     "deploy": "node scripts/deploy.js"
   },
   "author": "",
@@ -15,6 +16,7 @@
     "babel-preset-env": "1.6.0",
     "bootstrap-sass": "^3.3.7",
     "del": "^3.0.0",
+    "dotenv": "^5.0.0",
     "fs": "0.0.1-security",
     "ftp-deploy": "^1.2.2",
     "gulp": "^3.9.1",
@@ -27,6 +29,8 @@
     "http-server": "0.10.0",
     "path": "^0.12.7",
     "run-sequence": "^2.0.0",
+    "vue-hot-reload-api": "^2.2.4",
+    "webpack": "^3.11.0",
     "webpack-stream": "^4.0.0"
   },
   "dependencies": {

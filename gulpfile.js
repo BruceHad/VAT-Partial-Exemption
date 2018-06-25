@@ -1,5 +1,8 @@
 'use strict';
 
+// require('dotenv').load(); // local .env file
+console.log(process.env.NODE_ENV);
+
 const del = require('del');
 const gulp = require('gulp');
 const rename = require('gulp-rename');
@@ -54,10 +57,6 @@ gulp.task('js', function() {
         .pipe(webpack(require('./webpack.config.js')))
         .pipe(rename('script.js'))
         .pipe(gulp.dest('./dist/scripts'));
-    // Copy bs.js    
-    // gulp.src('src/js/bs.js')
-    //     .pipe(webpack(require('./webpack.config.js')))
-    //     .pipe(gulp.dest('./dist/scripts'));
 });
 
 gulp.task('css', function() {
